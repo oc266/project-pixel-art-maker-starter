@@ -19,9 +19,9 @@ function makeTable(table, gridHeight, gridWidth, tableType) {
   // create the rows and columns for the new tbody
   let htmlToAdd = '';
   for (i = 0; i < gridHeight; i++) {
-    htmlToAdd = htmlToAdd + '<tr class = ' + i + '>';
+    htmlToAdd = htmlToAdd + '<tr class = r' + i + '>';
     for (j = 0; j < gridWidth; j++) {
-      htmlToAdd = htmlToAdd + '<td class =' + j + '> </td>';
+      htmlToAdd = htmlToAdd + '<td class = c' + j + '> </td>';
     };
     htmlToAdd = htmlToAdd + ' </tr>';
   };
@@ -54,25 +54,28 @@ function makeTable(table, gridHeight, gridWidth, tableType) {
     let clickedBox = evt.target;
   // Change the color of the cell that has been clicked on
     clickedBox.style.cssText = 'background-color: ' + colorPicker.value;
- });
+    let chosenColor = clickedBox.style.backgroundColor;
 
     // Remove border between cells of the same color
-    //($(this).next().css('background-color') === $(this).css('background-color')){
-      //$(this).css('border-right', '1px solid '+ $(this).css('background-color'));
-    //};
-   // if ($(this).prev().css('background-color') === $(this).css('background-color')){
-     // $(this).prev().css('border-right', '1px solid '+ $(this).css('background-color'));
-   // };
-  //  if ($(this).parent().prev().children('.' + $(this).attr('class')).css('background-color') === $(this).css('background-color')) {
-     //$(this).parent().prev().children('.' + $(this).attr('class')).css('border-bottom', '1px solid '+ $(this).css('background-color'));
-   // };
-  //if ($(this).parent().next().children('.' + $(this).attr('class')).css('background-color') === $(this).css('background-color')) {
-    //$(this).css('border-bottom', '1px solid '+ $(this).css('background-color'));
-  //  };
-  //});
+    if (clickedBox.nextSibling.style.backgroundColor === chosenColor){
+      clickedBox.style.borderRight = '1px solid '+ chosenColor;
+    };
+    if (clickedBox.previousSibling.style.backgroundColor === chosenColor){
+      clickedBox.previousSibling.style.borderRight = '1px solid '+ chosenColor;
+    };
+    let parentRow = clickedBox.parentNode.previousSibling;
+    let boxAbove = parentRow.querySelector('td.' + clickedBox.className);
+    if (boxAbove.style.backgroundColor === chosenColor) {
+     boxAbove.style.borderBottom = '1px solid '+ chosenColor;
+    };
+    let childRow = clickedBox.parentNode.nextSibling;
+    let boxBelow = childRow.querySelector('td.' + clickedBox.className);
+    if (boxBelow.style.backgroundColor === chosenColor) {
+     clickedBox.style.borderBottom = '1px solid '+ chosenColor;
+    };
+  });
 
   // Clear the grid if the clear grid button is pressed
-
   clearGrid.addEventListener('click', function(evt) {
     for (let i = 0; i < listOfBoxes.length; i++) {
       listOfBoxes[i].style.cssText = 'background-color: white; border: 1px solid black';
