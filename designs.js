@@ -57,21 +57,29 @@ function makeTable(table, gridHeight, gridWidth, tableType) {
     let chosenColor = clickedBox.style.backgroundColor;
 
     // Remove border between cells of the same color
-    if (clickedBox.nextSibling.style.backgroundColor === chosenColor){
-      clickedBox.style.borderRight = '1px solid '+ chosenColor;
+    if (clickedBox.className != 'c' + (clickedBox.parentNode.querySelectorAll('td').length - 1)) {
+      if (clickedBox.nextSibling.style.backgroundColor === chosenColor) {
+        clickedBox.style.borderRight = '1px solid '+ chosenColor;
+      };
     };
-    if (clickedBox.previousSibling.style.backgroundColor === chosenColor){
-      clickedBox.previousSibling.style.borderRight = '1px solid '+ chosenColor;
-    };
-    let parentRow = clickedBox.parentNode.previousSibling;
-    let boxAbove = parentRow.querySelector('td.' + clickedBox.className);
-    if (boxAbove.style.backgroundColor === chosenColor) {
-     boxAbove.style.borderBottom = '1px solid '+ chosenColor;
+    if (clickedBox.className != 'c0') {
+      if (clickedBox.previousSibling.style.backgroundColor === chosenColor){
+        clickedBox.previousSibling.style.borderRight = '1px solid '+ chosenColor;
+      };
     };
-    let childRow = clickedBox.parentNode.nextSibling;
-    let boxBelow = childRow.querySelector('td.' + clickedBox.className);
-    if (boxBelow.style.backgroundColor === chosenColor) {
-     clickedBox.style.borderBottom = '1px solid '+ chosenColor;
+    if (clickedBox.parentNode.className != 'r0') {
+      let parentRow = clickedBox.parentNode.previousSibling;
+      let boxAbove = parentRow.querySelector('td.' + clickedBox.className);
+      if (boxAbove.style.backgroundColor === chosenColor) {
+       boxAbove.style.borderBottom = '1px solid '+ chosenColor;
+      };
+    };
+    if (clickedBox.parentNode.className != 'r' + (clickedBox.parentNode.parentNode.querySelectorAll('tr').length - 1)) {
+      let childRow = clickedBox.parentNode.nextSibling;
+      let boxBelow = childRow.querySelector('td.' + clickedBox.className);
+      if (boxBelow.style.backgroundColor === chosenColor) {
+       clickedBox.style.borderBottom = '1px solid '+ chosenColor;
+      };
     };
   });
 
